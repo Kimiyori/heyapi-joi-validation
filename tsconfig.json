@@ -1,0 +1,55 @@
+{
+  "compilerOptions": {
+    /* Base Options */
+    "target": "es2020",
+    "module": "commonjs",
+    "lib": ["es2020"],
+    "declaration": true,
+    "declarationMap": true, // Add sourcemap for declarations
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": ".",
+    "composite": true, // Enable project references
+    "incremental": true, // Enable incremental compilation
+
+    /* Strict Options */
+    "strict": true,
+    "alwaysStrict": true, // Parse in strict mode
+    "noImplicitAny": true, // Error on implicit any
+    "noImplicitThis": true, // Error on implicit this
+    "strictNullChecks": true, // Enable strict null checks
+    "strictFunctionTypes": true, // Enable strict function types
+    "strictPropertyInitialization": true, // Ensure class properties are initialized
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+
+    /* Module Resolution */
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@/compiler/*": ["src/compiler/*"]
+    },
+
+    /* Additional Checks */
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noPropertyAccessFromIndexSignature": true, // Require explicit index signatures
+
+    /* Emit */
+    "importHelpers": true, // Import helpers from tslib
+    "removeComments": false, // Keep comments in output
+    "preserveConstEnums": true, // Keep const enums in output
+    "newLine": "lf" // Use LF for line endings
+  },
+  "include": ["."],
+  "exclude": ["node_modules", "dist"],
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  }
+}

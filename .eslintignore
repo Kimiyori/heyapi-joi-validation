@@ -1,0 +1,10 @@
+node_modules
+dist
+coverage
+*.js
+!.eslintrc.js
+!jest.config.js
+.eslintrc.ts
+jest.config.ts
+openapi-ts.config.ts
+my-plugin.gen.ts
