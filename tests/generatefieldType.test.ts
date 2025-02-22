@@ -1,7 +1,8 @@
 import { IR } from '@hey-api/openapi-ts';
 
-import { generateFieldType } from '@/compiler/schema/generateFieldType';
-import { getResultAsString } from '@/compiler/utils/typeHelpers';
+import { generateFieldType } from '@/compiler/generators/field/generateFieldType';
+
+import { getResultAsString } from './testUtils';
 
 describe('generateFieldType', () => {
   test.each([

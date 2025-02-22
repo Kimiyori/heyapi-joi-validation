@@ -1,19 +1,20 @@
 import { IR } from '@hey-api/openapi-ts';
 import { Expression } from 'typescript';
 
-import { createSchemaName, getSchemaNameFromRef } from '@/compiler/utils/generic';
+import { chainMethods, createIdentifier } from '@/compiler/ast/factory';
+import { createSchemaName, getSchemaNameFromRef } from '@/compiler/utils/naming';
+
 import {
   handleAlternatives,
   handleArraySchema,
-  handleEnumSchema,
-  handleTupleSchema,
-  handleStringFormat,
-  handleNumberFormat,
-  isLogicalOr,
   handleBooleanFormat,
+  handleEnumSchema,
+  handleNumberFormat,
   handleObjectFormat,
-} from '@/compiler/utils/typeHandlers';
-import { chainMethods, createIdentifier } from '@/compiler/utils/typeHelpers';
+  handleStringFormat,
+  handleTupleSchema,
+  isLogicalOr,
+} from './validators';
 
 export const generateFieldType = (schema: IR.SchemaObject): Expression => {
   if (schema.$ref) {

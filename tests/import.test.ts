@@ -1,10 +1,7 @@
 import { describe, expect, test } from '@jest/globals';
 import { ImportDeclaration, NamedImports, SyntaxKind } from 'typescript';
 
-import {
-  createDefaultImportStatement,
-  createNamedImportStatement,
-} from '@/compiler/import/importUtils';
+import { createDefaultImportStatement, createNamedImportStatement } from '@/compiler/ast/import';
 
 describe('createDefaultImportStatement', () => {
   test('valid import name and module name', () => {

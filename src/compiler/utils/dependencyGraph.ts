@@ -1,7 +1,7 @@
 import { IR } from '@hey-api/openapi-ts';
 
 import { RemoveReadonly, SchemaObject } from '@/compiler/type';
-import { getSchemaNameFromRef } from '@/compiler/utils/generic';
+import { getSchemaNameFromRef } from '@/compiler/utils/naming';
 
 export class DependencyGraph {
   private graph = new Map<string, Set<string>>();

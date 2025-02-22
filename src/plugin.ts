@@ -1,10 +1,10 @@
 import type { Plugin } from '@hey-api/openapi-ts';
 
-import { createDefaultImportStatement } from '@/compiler/import/importUtils';
-import { generateJoiValidator } from '@/compiler/schema/generateSchema';
+import { createDefaultImportStatement } from '@/compiler/ast/import';
+import { generateOperationValidators } from '@/compiler/generators/operation/generatePathOrOperation';
+import { generateJoiValidator } from '@/compiler/generators/schema/generateSchema';
 import { DependencyGraph } from '@/compiler/utils/dependencyGraph';
-import { generateOperationValidators } from '@/compiler/utils/operationHelpers';
-import type { Config } from '@/types';
+import { Config } from '@/types';
 
 export const handler: Plugin.Handler<Config> = ({ context, plugin }) => {
   // create an output file. it will not be
@@ -23,7 +23,6 @@ export const handler: Plugin.Handler<Config> = ({ context, plugin }) => {
   context.subscribe('before', () => {});
   context.subscribe('operation', (operationData) => {
     const validators = generateOperationValidators(operationData);
-
     validators.forEach((validator) => file.add(validator));
   });
   context.subscribe('schema', (schema) => {

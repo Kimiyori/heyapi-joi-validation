@@ -1,6 +1,7 @@
-import { generateJoiValidator } from '@/compiler/schema/generateSchema';
+import { generateJoiValidator } from '@/compiler/generators/schema/generateSchema';
 import { SchemaObject } from '@/compiler/type';
-import { getResultAsString } from '@/compiler/utils/typeHelpers';
+
+import { getResultAsString } from './testUtils';
 
 type Assertions = {
   [key: string]: string | RegExp;

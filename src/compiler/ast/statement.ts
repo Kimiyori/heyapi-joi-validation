@@ -8,12 +8,11 @@ import {
   VariableStatement,
 } from 'typescript';
 
-import { generateFieldType } from '@/compiler/schema/generateFieldType';
-import { SchemaObject } from '@/compiler/type';
-import { createSchemaName } from '@/compiler/utils/generic';
-import { createIdentifier, createMethodCall } from '@/compiler/utils/typeHelpers';
+import { generateFieldType } from '../generators/field/generateFieldType';
 
-const createObjectValidator = (
+import { createIdentifier, createMethodCall } from './factory';
+
+export const createObjectValidator = (
   properties: Record<string, IR.SchemaObject>,
   required?: string[]
 ): Expression => {
@@ -31,7 +30,7 @@ const createObjectValidator = (
   );
 };
 
-const createPropertyAssignment = (
+export const createPropertyAssignment = (
   propName: string,
   propSchema: IR.SchemaObject,
   isRequired: boolean = false
@@ -45,7 +44,7 @@ const createPropertyAssignment = (
   return factory.createPropertyAssignment(createIdentifier(propName), joiValidatorExpr);
 };
 
-const createVariableStatement = (
+export const createVariableStatement = (
   validatorName: string,
   expression: Expression
 ): VariableStatement => {
@@ -61,25 +60,4 @@ const createVariableStatement = (
 
   const exportModifier = factory.createModifier(SyntaxKind.ExportKeyword);
   return factory.createVariableStatement([exportModifier], declarationList);
-};
-
-export const generateJoiValidator = (schema: SchemaObject): VariableStatement => {
-  if (!schema) {
-    throw new Error('Schema is required');
-  }
-
-  const validatorName = createSchemaName(schema.name);
-
-  const validatorExpression = (() => {
-    const baseValidator = schema.schema?.properties
-      ? createObjectValidator(
-          schema.schema.properties,
-          schema.schema.required?.slice() ?? undefined
-        )
-      : generateFieldType(schema.schema);
-
-    return createMethodCall(baseValidator, 'id', [validatorName]);
-  })();
-
-  return createVariableStatement(validatorName, validatorExpression);
 };

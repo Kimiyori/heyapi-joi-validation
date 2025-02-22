@@ -1,7 +1,9 @@
 import { describe, expect, test } from '@jest/globals';
 import { Expression, NumericLiteral, StringLiteral, SyntaxKind } from 'typescript';
 
-import { chainMethods, createLiteral, getResultAsString } from '@/compiler/utils/typeHelpers';
+import { chainMethods, createLiteral } from '@/compiler/ast/factory';
+
+import { getResultAsString } from './testUtils';
 
 describe('createLiteral', () => {
   it('creates a string literal', () => {

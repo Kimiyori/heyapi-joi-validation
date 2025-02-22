@@ -1,9 +1,16 @@
 import { IR } from '@hey-api/openapi-ts';
-import ts from 'typescript';
+import {
+  factory,
+  NodeFlags,
+  PropertyAssignment,
+  Statement,
+  SyntaxKind,
+  VariableStatement,
+} from 'typescript';
 
-import { generateFieldType } from '@/compiler/schema/generateFieldType';
-import { generateValidatorName } from '@/compiler/utils/generic';
-import { createMethodCall } from '@/compiler/utils/typeHelpers';
+import { createMethodCall } from '@/compiler/ast/factory';
+import { generateFieldType } from '@/compiler/generators/field/generateFieldType';
+import { generateValidatorName } from '@/compiler/utils/naming';
 
 export type OperationData = {
   method: keyof IR.PathItemObject;
@@ -11,47 +18,47 @@ export type OperationData = {
   path: string;
 };
 
-const createValidatorPropertyAssignment = (param: IR.ParameterObject): ts.PropertyAssignment => {
+const createValidatorPropertyAssignment = (param: IR.ParameterObject): PropertyAssignment => {
   let validator = generateFieldType(param.schema);
 
   if (param.required) {
     validator = createMethodCall(validator, 'required');
   }
 
-  return ts.factory.createPropertyAssignment(param.name, validator);
+  return factory.createPropertyAssignment(param.name, validator);
 };
 
 const createParameterValidator = (
   operationId: string,
   paramType: 'Path' | 'Query',
   params: IR.ParameterObject[]
-): ts.VariableStatement => {
-  const validatorObject = ts.factory.createObjectLiteralExpression(
+): VariableStatement => {
+  const validatorObject = factory.createObjectLiteralExpression(
     params.map(createValidatorPropertyAssignment),
     true
   );
 
-  const declaration = ts.factory.createVariableDeclaration(
+  const declaration = factory.createVariableDeclaration(
     generateValidatorName(operationId, paramType),
     undefined,
     undefined,
     validatorObject
   );
 
-  return ts.factory.createVariableStatement(
-    [ts.factory.createModifier(ts.SyntaxKind.ExportKeyword)],
-    ts.factory.createVariableDeclarationList([declaration], ts.NodeFlags.Const)
+  return factory.createVariableStatement(
+    [factory.createModifier(SyntaxKind.ExportKeyword)],
+    factory.createVariableDeclarationList([declaration], NodeFlags.Const)
   );
 };
 
-const generatePathValidator = (data: OperationData): ts.Statement | undefined => {
+const generatePathValidator = (data: OperationData): Statement | undefined => {
   const pathParams = Object.values(data.operation.parameters?.path || {});
   return pathParams.length > 0
     ? createParameterValidator(data.operation.id, 'Path', pathParams)
     : undefined;
 };
 
-const generateQueryValidator = (data: OperationData): ts.Statement | undefined => {
+const generateQueryValidator = (data: OperationData): Statement | undefined => {
   const queryParams = Object.values(data.operation.parameters?.query || {});
   return queryParams.length > 0
     ? createParameterValidator(data.operation.id, 'Query', queryParams)
@@ -59,7 +66,7 @@ const generateQueryValidator = (data: OperationData): ts.Statement | undefined =
 };
 
 export const generateOperationValidators = (data: OperationData) => {
-  const statements: ts.Statement[] = [];
+  const statements: Statement[] = [];
 
   const pathValidator = generatePathValidator(data);
   if (pathValidator) statements.push(pathValidator);
