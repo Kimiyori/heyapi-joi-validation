@@ -4,7 +4,6 @@ import { Expression } from 'typescript';
 import { chainMethods } from '@/compiler/ast/factory';
 import { generateFieldType } from '@/compiler/generators/field/generateFieldType';
 
-
 type ObjectValidation = string | [string, unknown[]];
 type PropertyValidators = Record<string, Expression>;
 
@@ -17,24 +16,28 @@ const buildObjectValidations = (schema: IR.SchemaObject): ObjectValidation[] => 
   const validations: ObjectValidation[] = ['object'];
 
   if (schema.properties !== undefined && schema.properties) {
-    addPropertyValidations(validations, schema.properties);
+    addPropertyValidations(validations, schema);
   }
 
   return validations;
 };
 
-const addPropertyValidations = (
-  validations: ObjectValidation[],
-  properties: Record<string, IR.SchemaObject>
-): void => {
-  const propertyValidators = createPropertyValidators(properties);
-  validations.push(['keys', [propertyValidators]]);
+const addPropertyValidations = (validations: ObjectValidation[], schema: IR.SchemaObject): void => {
+  if (!schema.properties) return;
+  const propertyValidators = createPropertyValidators(schema.properties);
+  if (schema.pattern) {
+    const patternStr = schema.pattern.replace(/^\/|\/$/g, '');
+    validations.push(['pattern', [new RegExp(patternStr), propertyValidators]]);
+  } else {
+    validations.push(['keys', [propertyValidators]]);
+  }
 };
 
 const createPropertyValidators = (
   properties: Record<string, IR.SchemaObject>
 ): PropertyValidators => {
-  return Object.fromEntries(
+  const result = Object.fromEntries(
     Object.entries(properties).map(([key, schema]) => [key, generateFieldType(schema)])
   );
+  return result;
 };

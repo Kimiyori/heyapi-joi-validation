@@ -3,12 +3,7 @@ import { IR } from '@hey-api/openapi-ts';
 import { chainMethods, createMethodCall } from '@/compiler/ast/factory';
 import { generateFieldType } from '@/compiler/generators/field/generateFieldType';
 
-export const isLogicalOr = (schema: IR.SchemaObject) => {
-  return !schema.type && schema.logicalOperator === 'or' && Array.isArray(schema.items ?? []);
-};
-
-export const handleAlternatives = (schema: IR.SchemaObject) => {
-  const items = schema.items ?? [];
+export const handleAlternatives = (items: readonly IR.SchemaObject[]) => {
   const nonNullSchemas = filterNonNullSchemas(items);
 
   if (hasNullableSchemas(items, nonNullSchemas)) {

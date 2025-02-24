@@ -2,19 +2,20 @@ import { IR } from '@hey-api/openapi-ts';
 import { Expression } from 'typescript';
 
 import { chainMethods, createIdentifier } from '@/compiler/ast/factory';
-import { createSchemaName, getSchemaNameFromRef } from '@/compiler/utils/naming';
-
 import {
   handleAlternatives,
   handleArraySchema,
   handleBooleanFormat,
   handleEnumSchema,
+  handleLogicalCombination,
   handleNumberFormat,
   handleObjectFormat,
   handleStringFormat,
   handleTupleSchema,
+  isLogicalAnd,
   isLogicalOr,
-} from './validators';
+} from '@/compiler/generators/field/validators';
+import { createSchemaName, getSchemaNameFromRef } from '@/compiler/utils/naming';
 
 export const generateFieldType = (schema: IR.SchemaObject): Expression => {
   if (schema.$ref) {
@@ -22,7 +23,10 @@ export const generateFieldType = (schema: IR.SchemaObject): Expression => {
   }
 
   if (isLogicalOr(schema)) {
-    return handleAlternatives(schema);
+    return handleAlternatives(schema.items || []);
+  }
+  if (isLogicalAnd(schema)) {
+    return handleLogicalCombination(schema);
   }
 
   switch (schema.type) {

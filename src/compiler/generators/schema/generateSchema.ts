@@ -11,7 +11,6 @@ export const generateJoiValidator = (schema: SchemaObject): VariableStatement =>
     throw new Error('Schema is required');
   }
   const validatorName = createSchemaName(schema.name);
-
   const validatorExpression = (() => {
     const baseValidator = schema.schema?.properties
       ? createObjectValidator(

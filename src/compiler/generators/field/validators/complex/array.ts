@@ -23,7 +23,6 @@ const buildArrayValidations = (schema: ArrayConstraints): ArrayValidation[] => {
 
   addItemsValidation(validations, schema.items);
   addSizeValidations(validations, schema);
-
   return validations;
 };
 
