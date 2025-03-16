@@ -33,7 +33,7 @@ export const createObjectValidator = (
 export const createPropertyAssignment = (
   propName: string,
   propSchema: IR.SchemaObject,
-  isRequired: boolean = false
+  isRequired: boolean = false,
 ): PropertyAssignment => {
   let joiValidatorExpr = generateFieldType(propSchema);
 

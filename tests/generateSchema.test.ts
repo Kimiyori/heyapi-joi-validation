@@ -132,4 +132,19 @@ describe('generateJoiValidator', () => {
       'joi.valid(null)': 'joi.valid(null)',
     });
   });
+  test('self referencing field', () => {
+    const schema: SchemaObject = {
+      name: 'Schema',
+      $ref: '#/components/schemas/Schema',
+      schema: {
+        $ref: '#/components/schemas/Schema',
+      },
+    };
+
+    testSchemaGeneration(schema, {
+      'export const SchemaValidator': 'export const SchemaValidator',
+      'joi.link("#SchemaValidator").id("SchemaValidator");':
+        'joi.link("#SchemaValidator").id("SchemaValidator");',
+    });
+  });
 });

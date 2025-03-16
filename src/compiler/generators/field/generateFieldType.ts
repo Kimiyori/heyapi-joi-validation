@@ -16,9 +16,15 @@ import {
   isLogicalOr,
 } from '@/compiler/generators/field/validators';
 import { createSchemaName, getSchemaNameFromRef } from '@/compiler/utils/naming';
+import { schemaContext } from '@/compiler/utils/schemaNameContext';
 
 export const generateFieldType = (schema: IR.SchemaObject): Expression => {
   if (schema.$ref) {
+    const refName = getSchemaNameFromRef(schema.$ref);
+
+    if (schemaContext.isSelfReference(refName)) {
+      return chainMethods('joi', ['link', [createSchemaName('#' + refName)]]);
+    }
     return createIdentifier(createSchemaName(getSchemaNameFromRef(schema.$ref)));
   }
 
