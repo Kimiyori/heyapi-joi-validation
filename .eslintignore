@@ -8,3 +8,4 @@ coverage
 jest.config.ts
 openapi-ts.config.ts
 my-plugin.gen.ts
+test-generate

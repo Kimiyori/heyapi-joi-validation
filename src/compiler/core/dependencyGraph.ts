@@ -85,3 +85,5 @@ export class DependencyGraph {
     sorted.push(name);
   }
 }
+
+export const dependencyGraph = new DependencyGraph();

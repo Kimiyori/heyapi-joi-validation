@@ -2,10 +2,10 @@ import { VariableStatement } from 'typescript';
 
 import { createMethodCall } from '@/compiler/ast/factory';
 import { createObjectValidator, createVariableStatement } from '@/compiler/ast/statement';
-import { generateFieldType } from '@/compiler/generators/field/generateFieldType';
+import { schemaContext } from '@/compiler/core/context/schemaContext';
+import { generateFieldType } from '@/compiler/generators/field';
 import { SchemaObject } from '@/compiler/type';
 import { createSchemaName } from '@/compiler/utils/naming';
-import { schemaContext } from '@/compiler/utils/schemaNameContext';
 
 export const generateJoiValidator = (schema: SchemaObject): VariableStatement => {
   if (!schema) {

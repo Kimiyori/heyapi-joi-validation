@@ -9,7 +9,7 @@ import {
 } from 'typescript';
 
 import { createMethodCall } from '@/compiler/ast/factory';
-import { generateFieldType } from '@/compiler/generators/field/generateFieldType';
+import { generateFieldType } from '@/compiler/generators/field';
 import { generateValidatorName } from '@/compiler/utils/naming';
 
 export type OperationData = {

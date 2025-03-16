@@ -1,5 +1,5 @@
+import { DependencyGraph } from '@/compiler/core/dependencyGraph';
 import { SchemaObject } from '@/compiler/type';
-import { DependencyGraph } from '@/compiler/utils/dependencyGraph';
 
 const createMockSchema = (name: string, dependencies: string[] = []): SchemaObject => ({
   $ref: `#/components/schemas/${name}`,

@@ -8,7 +8,7 @@ import {
   VariableStatement,
 } from 'typescript';
 
-import { generateFieldType } from '../generators/field/generateFieldType';
+import { generateFieldType } from '../generators/field';
 
 import { createIdentifier, createMethodCall } from './factory';
 
@@ -33,7 +33,7 @@ export const createObjectValidator = (
 export const createPropertyAssignment = (
   propName: string,
   propSchema: IR.SchemaObject,
-  isRequired: boolean = false,
+  isRequired: boolean = false
 ): PropertyAssignment => {
   let joiValidatorExpr = generateFieldType(propSchema);
 

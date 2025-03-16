@@ -1,10 +1,7 @@
 import { IR } from '@hey-api/openapi-ts';
 import { describe, test, expect } from '@jest/globals';
 
-import {
-  generateOperationValidators,
-  OperationData,
-} from '@/compiler/generators/operation/generatePathOrOperation';
+import { generateOperationValidators, OperationData } from '@/compiler/generators/operation';
 
 import { getResultAsString } from './testUtils';
 

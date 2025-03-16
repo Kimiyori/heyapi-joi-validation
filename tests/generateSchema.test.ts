@@ -1,4 +1,4 @@
-import { generateJoiValidator } from '@/compiler/generators/schema/generateSchema';
+import { generateJoiValidator } from '@/compiler/generators/schema';
 import { SchemaObject } from '@/compiler/type';
 
 import { getResultAsString } from './testUtils';

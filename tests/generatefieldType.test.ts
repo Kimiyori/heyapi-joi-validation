@@ -1,6 +1,6 @@
 import { IR } from '@hey-api/openapi-ts';
 
-import { generateFieldType } from '@/compiler/generators/field/generateFieldType';
+import { generateFieldType } from '@/compiler/generators/field';
 
 import { getResultAsString } from './testUtils';
 
